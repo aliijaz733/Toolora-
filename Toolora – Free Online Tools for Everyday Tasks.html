@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Free online tools for word counting, case conversion, JSON formatting, percentages and age calculation. Runs in your browser.">
+<title>Toolora – Free Online Tools for Everyday Tasks</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js'></script>
+<link rel="icon" href="/_blob/1244f89b9efc00683e7c3c74571467d0">
+<style>
+:root{--bg:#fff;--text:#0b1f3a;--muted:#4a5a70;--accent:#1d4ed8;--border:#e2e8f0;--soft:#f5f8fc;--err:#b91c1c;--ok:#15803d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--text:#e6edf7;--muted:#9fb0c7;--accent:#60a5fa;--border:#243247;--soft:#111b2e;--err:#fca5a5;--ok:#86efac}}
+:root[data-theme="dark"]{--bg:#0b1220;--text:#e6edf7;--muted:#9fb0c7;--accent:#60a5fa;--border:#243247;--soft:#111b2e;--err:#fca5a5;--ok:#86efac}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);border-bottom:1px solid var(--border);z-index:10}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;color:var(--text);text-decoration:none}
+nav ul{display:flex;gap:16px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav a{color:var(--text);text-decoration:none;font-size:15px}
+nav a:hover{color:var(--accent)}
+.menu-btn{display:none;font:inherit;font-size:15px;color:var(--text);background:none;border:1px solid var(--border);border-radius:10px;padding:8px 14px;cursor:pointer}
+@media (max-width:860px){
+.bar{height:auto;padding:12px 0}
+.menu-btn{display:block}
+nav{display:none;width:100%}
+nav.open{display:block}
+nav ul{flex-direction:column;gap:0}
+nav a{display:block;padding:12px 0;border-top:1px solid var(--border)}
+}
+.hero{text-align:center;padding:56px 0 28px}
+.hero input{font-size:18px;padding:16px 18px;max-width:620px;margin:0 auto;display:block;width:100%}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:20px 0 12px;letter-spacing:-.02em}
+h2{font-size:24px;margin:0 0 16px}
+section{padding:28px 0}
+.lead{color:var(--muted);font-size:18px;max-width:640px;margin:0 auto 24px}
+input,textarea,select{font:inherit;color:var(--text);background:var(--bg);width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:12px}
+textarea{resize:vertical;min-height:160px}
+label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.card{display:block;border:1px solid var(--border);border-radius:14px;padding:20px;color:var(--text);text-decoration:none;background:var(--bg)}
+.card:hover{border-color:var(--accent)}
+.card h3{margin:6px 0 4px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.ico{font-size:26px}
+.benefit{border:1px solid var(--border);border-radius:14px;padding:20px}
+.benefit h3{margin:0 0 6px;font-size:17px}
+.benefit p{margin:0;color:var(--muted);font-size:15px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.chip{font:inherit;font-size:14px;padding:7px 14px;border:1px solid var(--border);border-radius:999px;background:var(--bg);color:var(--text);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--soft)}
+.toolbox{border:1px solid var(--border);border-radius:14px;padding:20px;margin:20px 0;background:var(--soft)}
+.calc{border:1px solid var(--border);border-radius:12px;padding:16px;margin:0 0 12px;background:var(--bg)}
+.calc h3{margin:0 0 4px;font-size:17px}
+.btn{font:inherit;font-size:15px;padding:10px 16px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;margin:12px 8px 0 0}
+.btn.ghost{background:transparent;color:var(--accent)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.metric{border:1px solid var(--border);border-radius:12px;padding:14px;background:var(--bg)}
+.metric b{display:block;font-size:22px;word-break:break-word}
+.metric span{color:var(--muted);font-size:13px}
+.res{font-size:16px;font-weight:600;margin:10px 0 0;min-height:22px;color:var(--ok);word-break:break-word}
+.err{color:var(--err);font-size:14px;margin:10px 0 0;min-height:22px}
+pre{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:14px;min-height:60px}
+.muted{color:var(--muted)}
+.crumb{font-size:14px;color:var(--muted);margin:24px 0 0}
+details{border-bottom:1px solid var(--border);padding:14px 0}
+summary{cursor:pointer;font-weight:600}
+footer{border-top:1px solid var(--border);margin-top:24px;padding:28px 0;color:var(--muted);font-size:14px}
+footer a{color:var(--muted);margin-right:16px;display:inline-block;margin-bottom:6px}
+/* Toolora theme */
+body{background:var(--soft)}
+.brand-logo{display:block;width:100%;max-width:200px;height:auto;background:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toolbox{background:var(--bg)}
+.benefit{background:var(--bg);border-radius:12px}
+.ico{width:40px;height:40px;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-size:20px}
+.ctop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.arrow{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;font-size:13px;color:var(--muted)}
+.card{border-radius:12px;box-shadow:0 1px 2px rgba(15,27,45,.05)}
+.card:hover{box-shadow:0 4px 14px rgba(15,27,45,.08)}
+.tag{display:inline-block;margin-top:14px;font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+.chip{border-radius:8px;padding:8px 14px}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+input[type=search]{background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M13 13l4 4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center;padding-left:42px;border-radius:10px}
+.hero input[type=search]{padding-left:46px}
+@media (min-width:861px){
+header{position:fixed;top:0;left:0;bottom:0;width:232px;height:100vh;overflow-y:auto;background:#0f1b2d;border-bottom:0;z-index:20}
+header .bar{flex-direction:column;align-items:stretch;height:auto;padding:24px 14px;gap:24px;max-width:none;margin:0}
+.logo{color:#fff;font-size:18px;display:flex;align-items:center}
+nav{display:block;width:auto}
+nav ul{flex-direction:column;gap:2px}
+nav a{display:block;padding:10px 12px;border-top:0;border-radius:8px;font-size:14px;color:#c9d3e3}
+nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+main,footer{margin-left:232px}
+}
+.back{display:inline-flex;align-items:center;gap:6px;margin:14px 0 4px;padding:9px 16px;border:1px solid var(--border);border-radius:10px;color:var(--accent);text-decoration:none;font-size:14px;font-weight:600;background:var(--bg)}
+.back:hover{border-color:var(--accent)}
+/* Toolora visuals and 3D motion */
+html{scroll-behavior:smooth}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(640px 320px at 85% -5%,rgba(59,130,246,.16),transparent 65%),radial-gradient(520px 320px at 0% 105%,rgba(34,211,238,.12),transparent 65%)}
+h1{animation:fadeUp .8s ease both}
+.hero h1{background:linear-gradient(90deg,var(--text) 35%,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);background:var(--bg);padding:6px 14px;border-radius:999px;margin-bottom:10px;animation:fadeUp .6s ease both}
+.lead{animation:fadeUp .9s ease .15s both}
+.ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(59,130,246,.14),rgba(34,211,238,.18));display:grid;place-items:center;transition:transform .35s ease}
+.ico svg{width:34px;height:34px}
+.card{transform-style:preserve-3d;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;box-shadow:0 1px 2px rgba(15,27,45,.05)}
+.card:hover,.card:focus-visible{transform:translateY(-6px) rotateX(5deg);border-color:var(--accent);box-shadow:0 22px 40px -18px rgba(37,99,235,.45)}
+.card:hover .ico{transform:translateZ(18px)}
+.tool-art{width:112px;height:112px;margin:4px 0 16px;padding:16px;border-radius:26px;background:var(--bg);border:1px solid var(--border);box-shadow:0 24px 50px -20px rgba(37,99,235,.45);animation:float 6s ease-in-out infinite}
+.tool-art svg{width:100%;height:100%}
+.toolbox{border-radius:18px;box-shadow:0 30px 60px -36px rgba(37,99,235,.4)}
+.btn{background:linear-gradient(135deg,#3b82f6,#22d3ee);border-color:transparent;box-shadow:0 10px 24px -10px rgba(37,99,235,.7);transition:transform .2s ease,box-shadow .2s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px -10px rgba(37,99,235,.8)}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--accent);box-shadow:none}
+.btn.ghost:hover{background:var(--soft)}
+.back{transition:transform .2s ease,border-color .2s ease}
+.back:hover{transform:translateX(-3px)}
+.scene{position:relative;height:300px;max-width:760px;margin:0 auto 32px;perspective:1100px;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s ease}
+.glow{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.35),rgba(34,211,238,.1) 55%,transparent 70%);filter:blur(6px);animation:pulse 6s ease-in-out infinite}
+.fcard{position:absolute;width:132px;padding:14px 10px;border-radius:18px;background:var(--bg);border:1px solid var(--border);box-shadow:0 24px 40px -18px rgba(15,27,45,.35);text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:8px;animation:float 6s ease-in-out infinite}
+.fcard svg{width:56px;height:56px}
+.fcard span{font-size:13px;font-weight:600;text-align:center}
+.fcard:hover{border-color:var(--accent)}
+.fc1{left:0;top:34%}
+.fc2{left:19.5%;top:0;animation-delay:-1.2s}
+.fc3{left:39%;top:46%;animation-delay:-2.4s}
+.fc4{left:58.5%;top:0;animation-delay:-3.6s}
+.fc5{left:78%;top:34%;animation-delay:-4.8s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (max-width:600px){.scene{height:250px}.fcard{width:96px;padding:10px 6px}.fcard svg{width:40px;height:40px}.fcard span{font-size:11px}.fc1{left:0;top:44%}.fc2{left:34%;top:0}.fc3{left:68%;top:44%}.fc4,.fc5{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.scene{transform:none!important}}
+.plist{padding:0;margin:12px 0}
+.plist li{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--bg)}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap bar">
+<a class="logo" href="#/"><img class="brand-logo" src="/_blob/7183f979eff512b21cc8daf7abf2cb86" alt="Toolora logo" width="520" height="136"></a>
+<button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+<nav id="nav" aria-label="Main">
+<ul>
+<li><a href="#/">Home</a></li>
+<li><a href="#/tools">All Tools</a></li>
+
+
+<li><a href="#/category/image">Image Tools</a></li>
+<li><a href="#/category/pdf">PDF Tools</a></li>
+<li><a href="#/category/text">Text Tools</a></li>
+<li><a href="#/category/calc">Calculators</a></li>
+<li><a href="#/category/dev">Developer Tools</a></li>
+<li><a href="#/about">About</a></li>
+<li><a href="#/contact">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="app"></main>
+<footer>
+<div class="wrap">
+<p><a href="#/about">About</a><a href="#/contact">Contact</a><a href="#/privacy">Privacy Policy</a><a href="#/terms">Terms of Service</a><a href="#/disclaimer">Disclaimer</a></p>
+<p>© 2026 Toolora. Free tools for general use.</p>
+</div>
+</footer>
+<script>
+const CONTACT_EMAIL = "hello@example.com"; // replace with your real address before publishing
+async function saveFile(name,blob,msg){const dl=window.claude&&await window.claude.use('downloads');if(!dl)return say(msg,false,'Downloads are not available in this view. Open the page in a new tab and try again.');try{await dl.save({filename:name,data:blob});say(msg,true,'Download sent to your browser.');}catch(e){const m={declined:'Download was cancelled.',rate_limited:'Please wait a moment and try again.',too_large:'This file is too large to download here.'};say(msg,false,m[e&&e.code]||'Download is not available in this view.');}}
+const app = document.getElementById('app');
+let state = { cat: 'all', q: '' };
+
+const CATS = {
+  image: ["Image Tools", "🖼️", "Compress images for faster sharing."],
+  pdf: ["PDF Tools", "📄", "Merge PDFs and convert images to PDF."],
+  text: ["Text Tools", "✏️", "Count words, format text and make QR codes."],
+  calc: ["Calculators", "🧮", "Percentages, discounts and ages."],
+  dev: ["Developer Tools", "🛠️", "Format and check JSON."]
+};
+
+const say = (id, ok, text) => { const el = document.getElementById(id); el.className = ok ? 'res' : 'err'; el.textContent = text; };
+async function copyTo(text, id) {
+  if (!text) return say(id, false, 'Nothing to copy yet.');
+  try { await navigator.clipboard.writeText(text); say(id, true, 'Copied.'); }
+  catch (e) { say(id, false, 'Copy failed. Select the text and copy it manually.'); }
+}
+function saveTxt(text, name) {
+  if (!text) return say('msg', false, 'Nothing to download yet.');
+  const u = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 1000);
+}
+
+const TOOLS = [ {slug:'image-to-pdf',name:'Image to PDF Converter',cat:'pdf',kw:'image to pdf converter jpg png webp convert photos document scan',desc:'Convert JPG, PNG and WebP images into one PDF with page size and margin options.',intro:'Convert several images into one PDF file. Choose a page size and margin, then download the finished PDF. Each image becomes one page.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='6' y='12' width='24' height='20' rx='4' fill='#22D3EE' opacity='.3'/><circle cx='15' cy='20' r='3' fill='#22D3EE'/><path d='M8 30l7-7 5 5 3-3 6 6z' fill='#22D3EE'/><path d='M34 24h6m-2.5-2.5 2.5 2.5-2.5 2.5' stroke='#3B82F6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='42' y='10' width='16' height='24' rx='3' fill='#3B82F6'/><path d='M46 18h8M46 22h8M46 26h5' stroke='#fff' stroke-width='1.8' stroke-linecap='round'/><rect x='14' y='38' width='36' height='16' rx='4' fill='#3B82F6' opacity='.18'/><text x='32' y='50' font-size='9' font-weight='800' text-anchor='middle' fill='#3B82F6' font-family='system-ui,sans-serif'>PDF</text></svg>`,html:`<label for='ii'>Choose images (JPG, PNG or WebP, up to 100 files)</label><input type='file' id='ii' accept='image/jpeg,image/png,image/webp' multiple><p class='muted' id='il'>No images selected.</p><div class='two'><div><label for='ps'>Page size</label><select id='ps'><option value='a4'>A4</option><option value='letter'>US Letter</option><option value='original'>Original image size</option></select></div><div><label for='pm'>Margin</label><select id='pm'><option value='0'>No margin</option><option value='20' selected>Small (20 pt)</option><option value='40'>Large (40 pt)</option></select></div></div><button class='btn' id='ib'>Create PDF</button><p class='err' id='msg' role='status'></p><button class='btn' id='idl' hidden>Download PDF</button>`,how:'Choose one or more images. JPG, PNG and WebP are supported. Each image becomes one page, in the order the files were picked. Choose a page size and margin, click Create PDF, then download the file. WebP images are converted automatically.',faq:[['Which image types can I convert?','JPG, PNG and WebP images up to 25 MB each. Other formats such as GIF or BMP are not supported yet.'],['What does Original image size do?','Each page is sized to its image, so the full image is kept without being forced onto a standard page size.'],['Are my images uploaded?','No. The PDF is created inside your browser and is only saved to your device when you click download.']],init(){const $=i=>document.getElementById(i);let imgs=[];const SIZES={a4:[595.28,841.89],letter:[612,792],original:null};const toPng=f=>new Promise((res,rej)=>{const u=URL.createObjectURL(f);const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0);URL.revokeObjectURL(u);c.toBlob(b=>b?b.arrayBuffer().then(res,rej):rej(new Error('encode')),'image/png');};im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('read'));};im.src=u;});const embed=async(out,f)=>{if(f.type==='image/jpeg'){try{return await out.embedJpg(await f.arrayBuffer());}catch(e){}}if(f.type==='image/png'){try{return await out.embedPng(await f.arrayBuffer());}catch(e){}}return out.embedPng(await toPng(f));};$('ii').onchange=()=>{const all=[...$('ii').files];const ok=all.filter(f=>['image/jpeg','image/png','image/webp'].includes(f.type)&&f.size<=25*1048576);imgs=ok.slice(0,100);$('il').textContent=imgs.length?imgs.length+' image(s) selected: '+imgs.map(f=>f.name).join(', '):'No images selected.';$('idl').hidden=true;const msg=ok.length<all.length?'Some files were skipped. Only JPG, PNG and WebP up to 25 MB are supported.':ok.length>100?'Only the first 100 images will be used.':'';say('msg',!msg,msg);};$('ib').onclick=async()=>{if(!window.PDFLib)return say('msg',false,'The PDF engine did not load. Check your connection and refresh the page.');if(!imgs.length)return say('msg',false,'Choose at least one image.');try{say('msg',true,'Creating PDF...');const out=await PDFLib.PDFDocument.create();const sz=SIZES[$('ps').value],m=+$('pm').value;for(const f of imgs){const im=await embed(out,f);const pw=sz?sz[0]:im.width+2*m,ph=sz?sz[1]:im.height+2*m;const pg=out.addPage([pw,ph]);const sc=sz?Math.min((pw-2*m)/im.width,(ph-2*m)/im.height):1;const w=im.width*sc,h=im.height*sc;pg.drawImage(im,{x:(pw-w)/2,y:(ph-h)/2,width:w,height:h});}const data=await out.save();const d=$('idl');d._blob=new Blob([data],{type:'application/pdf'});d.hidden=false;say('msg',true,`Created a PDF with ${imgs.length} page(s).`);}catch(e){say('msg',false,'Could not create the PDF. One image may be damaged.');}};$('idl').onclick=()=>saveFile('image-to-pdf.pdf',$('idl')._blob,'msg');}}, {slug:'image-compressor',name:'Image Compressor',cat:'image',kw:'compress image reduce size jpg png webp photo smaller',desc:'Reduce JPG, PNG and WebP file size with a quality slider.',intro:'Make image files smaller right in your browser. Pick a quality level, compare the original and compressed images, then download the result.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='8' y='12' width='48' height='40' rx='8' fill='#3B82F6' opacity='.18'/><path d='M16 44l10-12 8 8 6-6 8 10z' fill='#3B82F6'/><circle cx='24' cy='24' r='4' fill='#22D3EE'/><path d='M40 18l-5 5m0-5v5h5M24 46l5-5m-5 0v5h5' stroke='#22D3EE' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>`,html:`<label for='file'>Choose an image (JPG, PNG or WebP, up to 25 MB)</label><input type='file' id='file' accept='image/jpeg,image/png,image/webp'><label for='qv'>Quality: <span id='qvv'>80</span>%</label><input type='range' id='qv' min='10' max='100' value='80'><label for='fmt'>Output format</label><select id='fmt'><option value='image/jpeg'>JPEG</option><option value='image/webp'>WebP</option></select><div class='metrics' id='im' aria-live='polite'></div><div class='two' style='margin-top:16px'><div><p class='muted'>Original</p><img id='orig' alt='Original image' style='max-width:100%;border-radius:12px'></div><div><p class='muted'>Compressed</p><img id='comp' alt='Compressed image' style='max-width:100%;border-radius:12px'></div></div><button class='btn' id='dl' disabled>Download compressed image</button><p class='err' id='msg' role='status'></p>`,how:'Choose an image, then move the quality slider. Lower quality gives a smaller file with more visible compression. Choose JPEG or WebP, then download the result. Transparent areas of PNG images become white in JPEG.',faq:[['Does compression change my original file?','No. Your original stays on your device and the download is a separate new file.'],['Why can the compressed file be larger?','Very small images or a very high quality setting can produce a larger file. The result shows the real size change so you can decide.']],init(){const $=i=>document.getElementById(i);let src=null,ob=0,ou=null;const kb=b=>b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';const st=(l,v)=>`<div class='metric'><b>${v}</b><span>${l}</span></div>`;const run=()=>{if(!src)return;$('qvv').textContent=$('qv').value;const c=document.createElement('canvas');c.width=src.naturalWidth;c.height=src.naturalHeight;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0);c.toBlob(b=>{if(!b)return say('msg',false,'Your browser could not compress this image.');if(ou)URL.revokeObjectURL(ou);ou=URL.createObjectURL(b);$('comp').src=ou;$('dl')._blob=b;$('dl').disabled=false;const p=Math.round((1-b.size/ob)*100);$('im').innerHTML=st('Original',kb(ob))+st('Compressed',kb(b.size))+st(p>=0?'Size reduction':'Size increase',Math.abs(p)+'%');say('msg',p>=0,p>=0?'Compressed successfully.':'The compressed file is larger. Try a lower quality or keep the original.');},$('fmt').value,$('qv').value/100);};$('file').onchange=()=>{const f=$('file').files[0];if(!f)return;if(!['image/jpeg','image/png','image/webp'].includes(f.type))return say('msg',false,'Unsupported file. Use JPG, PNG or WebP.');if(f.size>25*1048576)return say('msg',false,'This file is larger than 25 MB.');ob=f.size;const u=URL.createObjectURL(f);$('orig').src=u;const im=new Image();im.onload=()=>{src=im;run();};im.onerror=()=>say('msg',false,'This image could not be read.');im.src=u;};$('qv').oninput=run;$('fmt').onchange=run;$('dl').onclick=()=>{const b=$('dl')._blob;if(!b)return;saveFile('compressed.'+($('fmt').value==='image/webp'?'webp':'jpg'),b,'msg');};}},{slug:'merge-pdf',name:'Merge PDF',cat:'pdf',kw:'merge combine join pdf files documents',desc:'Combine several PDF files into one, in the order you choose.',intro:'Add two or more PDF files, put them in the order you want, and download one combined PDF. Everything runs in your browser.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='10' y='8' width='30' height='40' rx='5' fill='#3B82F6' opacity='.25'/><rect x='22' y='16' width='30' height='40' rx='5' fill='#3B82F6'/><path d='M29 30h16M29 37h16M29 44h10' stroke='#fff' stroke-width='2.5' stroke-linecap='round'/></svg>`,html:`<label for='pf'>Add PDF files (pick several at once, then reorder)</label><input type='file' id='pf' accept='application/pdf' multiple><ol class='plist' id='pl' aria-label='PDF files in merge order'></ol><button class='btn' id='pm'>Merge PDFs</button><button class='btn ghost' id='pc'>Clear list</button><p class='err' id='msg' role='status'></p><button class='btn' id='pd' hidden>Download merged PDF</button>`,how:'Add two or more PDF files, then use the up and down arrows to set the order. Click Merge PDFs and download the combined file. Files are processed in your browser and are not uploaded.',faq:[['Can I merge password-protected PDFs?','No. Password-protected or damaged PDFs cannot be merged. Remove the password in your PDF app first.'],['Is there a file size limit?','There is no fixed limit, but very large files can be slow on older devices.']],init(){const $=i=>document.getElementById(i);let files=[],url=null;const draw=()=>{$('pl').innerHTML=files.map((f,i)=>`<li><span>${i+1}. ${f.name}</span><span><button class='btn ghost' style='margin:0 6px 0 0;padding:4px 10px' data-i='${i}' data-d='-1' aria-label='Move up'>↑</button><button class='btn ghost' style='margin:0;padding:4px 10px' data-i='${i}' data-d='1' aria-label='Move down'>↓</button></span></li>`).join('');};$('pl').onclick=e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,j=i+(+b.dataset.d);if(j<0||j>=files.length)return;const t=files[i];files[i]=files[j];files[j]=t;draw();};$('pf').onchange=()=>{const all=[...$('pf').files],ok=all.filter(f=>f.type==='application/pdf');files=files.concat(ok);$('pf').value='';$('pd').hidden=true;say('msg',ok.length===all.length,ok.length===all.length?'':'Some files were skipped because they are not PDFs.');draw();};$('pd').onclick=()=>saveFile('merged.pdf',$('pd')._blob,'msg');$('pc').onclick=()=>{files=[];$('pd').hidden=true;draw();say('msg',true,'');};$('pm').onclick=async()=>{if(!window.PDFLib)return say('msg',false,'The PDF engine did not load. Check your connection and refresh the page.');if(files.length<2)return say('msg',false,'Add at least two PDF files.');try{say('msg',true,'Merging...');const out=await PDFLib.PDFDocument.create();for(const f of files){const src=await PDFLib.PDFDocument.load(await f.arrayBuffer());const pg=await out.copyPages(src,src.getPageIndices());pg.forEach(p=>out.addPage(p));}const bytes=await out.save();if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));const d=$('pd');d._blob=new Blob([bytes],{type:'application/pdf'});d.hidden=false;say('msg',true,`Merged ${files.length} files into ${out.getPageCount()} pages.`);}catch(e){say('msg',false,'Could not merge these files. One may be password-protected or damaged.');}};}},{slug:'jpg-to-pdf',name:'JPG to PDF',cat:'pdf',kw:'jpg to pdf convert image photo png pdf',desc:'Turn JPG or PNG images into a PDF, one image per page.',intro:'Convert one or more JPG or PNG images into a single PDF file. Each image becomes one page, in the order you selected them.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='6' y='16' width='22' height='30' rx='4' fill='#22D3EE' opacity='.3'/><path d='M11 40l6-7 5 5 3-3 4 5z' fill='#22D3EE'/><path d='M32 31h8m-3-3 3 3-3 3' stroke='#3B82F6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><rect x='42' y='10' width='18' height='26' rx='3' fill='#3B82F6'/><text x='51' y='28' font-size='8' font-weight='800' text-anchor='middle' fill='#fff' font-family='system-ui,sans-serif'>PDF</text></svg>`,html:`<label for='ji'>Choose JPG or PNG images (in page order)</label><input type='file' id='ji' accept='image/jpeg,image/png' multiple><p class='muted' id='jl'>No images selected.</p><button class='btn' id='jb'>Create PDF</button><p class='err' id='msg' role='status'></p><button class='btn' id='jd' hidden>Download PDF</button>`,how:'Choose one or more JPG or PNG images. They become pages in the PDF in the order they were selected. Each page is the same size as its image. WebP images are not supported in this tool.',faq:[['Why are some of my images not converted?','Only JPG and PNG are supported here. Convert WebP images to JPG first, then try again.'],['Are my images uploaded?','No. The PDF is created inside your browser.']],init(){const $=i=>document.getElementById(i);let imgs=[],url=null;$('ji').onchange=()=>{const all=[...$('ji').files];imgs=all.filter(f=>['image/jpeg','image/png'].includes(f.type));$('jl').textContent=imgs.length?imgs.length+' image(s): '+imgs.map(f=>f.name).join(', '):'No images selected.';$('jd').hidden=true;say('msg',imgs.length===all.length,imgs.length===all.length?'':'Other formats are not supported here. Use JPG or PNG.');};$('jd').onclick=()=>saveFile('images.pdf',$('jd')._blob,'msg');$('jb').onclick=async()=>{if(!window.PDFLib)return say('msg',false,'The PDF engine did not load. Check your connection and refresh the page.');if(!imgs.length)return say('msg',false,'Choose at least one JPG or PNG image.');try{say('msg',true,'Creating PDF...');const out=await PDFLib.PDFDocument.create();for(const f of imgs){const bytes=await f.arrayBuffer();const im=f.type==='image/png'?await out.embedPng(bytes):await out.embedJpg(bytes);const pg=out.addPage([im.width,im.height]);pg.drawImage(im,{x:0,y:0,width:im.width,height:im.height});}const data=await out.save();if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(new Blob([data],{type:'application/pdf'}));const d=$('jd');d._blob=new Blob([data],{type:'application/pdf'});d.hidden=false;say('msg',true,`Created a PDF with ${imgs.length} page(s).`);}catch(e){say('msg',false,'Could not create the PDF. One image may be damaged.');}};}},{slug:'text-formatter',name:'Text Formatter',cat:'text',kw:'format text clean spaces remove empty lines duplicates sort join',desc:'Clean spacing, remove duplicate or empty lines, sort lines and more.',intro:'Tidy up messy text in one click. Remove extra spaces, delete empty or duplicate lines, sort lines alphabetically, or join everything into one line.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='10' y='12' width='44' height='40' rx='8' fill='#3B82F6' opacity='.18'/><rect x='18' y='22' width='28' height='4' rx='2' fill='#3B82F6'/><rect x='18' y='31' width='20' height='4' rx='2' fill='#3B82F6' opacity='.6'/><rect x='18' y='40' width='26' height='4' rx='2' fill='#22D3EE'/><path d='M48 14l1.5 3.5L53 19l-3.5 1.5L48 24l-1.5-3.5L43 19l3.5-1.5z' fill='#22D3EE'/></svg>`,html:`<label for='t'>Your text</label><textarea id='t' rows='10' placeholder='Paste your text here...'></textarea><div><button class='btn' data-op='clean'>Clean extra spaces</button><button class='btn' data-op='empty'>Remove empty lines</button><button class='btn' data-op='dupes'>Remove duplicate lines</button><button class='btn' data-op='sort'>Sort A to Z</button><button class='btn' data-op='join'>Join into one line</button></div><div><button class='btn ghost' id='cp'>Copy</button><button class='btn ghost' id='cl'>Clear</button></div><p class='err' id='msg' role='status'></p>`,how:'Paste your text, then press an action button. You can clean extra spaces, remove empty or duplicate lines, sort lines, or join all lines into one. Copy the result when you are done.',faq:[['Does this change the meaning of my text?','No. These actions only change spacing and line order. Check the result before you use it.'],['How does sorting work?','Lines are sorted using your browser alphabet rules, so upper and lower case letters are placed alphabetically.']],init(){const t=document.getElementById('t');const NL=String.fromCharCode(10);const ops={clean:s=>s.split(NL).map(l=>l.trim().split(' ').filter(Boolean).join(' ')).join(NL),empty:s=>s.split(NL).filter(l=>l.trim()).join(NL),dupes:s=>[...new Set(s.split(NL))].join(NL),sort:s=>s.split(NL).sort((a,b)=>a.localeCompare(b)).join(NL),join:s=>s.split(NL).map(l=>l.trim()).filter(Boolean).join(' ')};document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>{if(!t.value.trim())return say('msg',false,'Enter some text first.');t.value=ops[b.dataset.op](t.value);say('msg',true,'Done.');});document.getElementById('cp').onclick=()=>copyTo(t.value,'msg');document.getElementById('cl').onclick=()=>{t.value='';say('msg',true,'');};}},{slug:'qr-code-generator',name:'QR Code Generator',cat:'text',kw:'qr code generator link url text barcode png svg color',desc:'Create QR codes from text or links with custom colors. Download PNG or SVG.',intro:'Turn any text or link into a QR code. Choose the colors, preview the code, then download it as a PNG image or an SVG file.',art:`<svg viewBox='0 0 64 64' fill='none'><rect x='8' y='8' width='20' height='20' rx='3' fill='#3B82F6'/><rect x='14' y='14' width='8' height='8' fill='#fff'/><rect x='36' y='8' width='20' height='20' rx='3' fill='#3B82F6'/><rect x='42' y='14' width='8' height='8' fill='#fff'/><rect x='8' y='36' width='20' height='20' rx='3' fill='#3B82F6'/><rect x='14' y='42' width='8' height='8' fill='#fff'/><rect x='36' y='36' width='6' height='6' fill='#22D3EE'/><rect x='46' y='36' width='10' height='6' fill='#22D3EE'/><rect x='36' y='46' width='20' height='10' fill='#22D3EE'/></svg>`,html:`<label for='qt'>Text or link</label><textarea id='qt' rows='3' placeholder='https://example.com'></textarea><div class='two'><div><label for='fg'>Foreground color</label><input type='color' id='fg' value='#0b1f3a'></div><div><label for='bg'>Background color</label><input type='color' id='bg' value='#ffffff'></div></div><button class='btn' id='qg'>Generate QR code</button><div id='qo' style='margin-top:16px;text-align:center'></div><button class='btn ghost' id='qp' hidden>Download PNG</button><button class='btn ghost' id='qs' hidden>Download SVG</button><p class='err' id='msg' role='status'></p>`,how:'Type your text or link, choose the two colors, then click Generate QR code. Download the code as PNG for images or SVG for print. Use strong contrast between the colors so phones can scan it easily.',faq:[['Does the QR code expire?','No. The QR code stores the text itself, so it keeps working as long as the link or text stays valid.'],['Why does my QR code not scan?','Use a dark foreground color and a light background color. Long text makes the code denser, so keep links short.']],init(){const $=i=>document.getElementById(i);let st=null;const dl=(b,n)=>saveFile(n,b,'msg');$('qg').onclick=()=>{const text=$('qt').value.trim();if(!text)return say('msg',false,'Enter some text or a link first.');if(typeof qrcode!=='function')return say('msg',false,'The QR engine did not load. Check your connection and refresh the page.');let qr;try{qr=qrcode(0,'M');qr.addData(text);qr.make();}catch(e){return say('msg',false,'This text is too long for a QR code. Shorten it.');}const n=qr.getModuleCount(),q=4,size=n+q*2,fg=$('fg').value,bg=$('bg').value;let rects='';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(qr.isDark(r,c))rects+=`<rect x='${c+q}' y='${r+q}' width='1' height='1'/>`;const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${size} ${size}' width='256' height='256' shape-rendering='crispEdges'><rect width='${size}' height='${size}' fill='${bg}'/><g fill='${fg}'>${rects}</g></svg>`;st={qr,n,q,size,fg,bg,svg};$('qo').innerHTML=svg;$('qp').hidden=false;$('qs').hidden=false;say('msg',true,'QR code ready.');};$('qp').onclick=()=>{if(!st)return;const k=10,cv=document.createElement('canvas');cv.width=cv.height=st.size*k;const x=cv.getContext('2d');x.fillStyle=st.bg;x.fillRect(0,0,cv.width,cv.height);x.fillStyle=st.fg;for(let r=0;r<st.n;r++)for(let c=0;c<st.n;c++)if(st.qr.isDark(r,c))x.fillRect((c+st.q)*k,(r+st.q)*k,k,k);cv.toBlob(b=>dl(b,'qr-code.png'),'image/png');};$('qs').onclick=()=>{if(!st)return;dl(new Blob([st.svg],{type:'image/svg+xml'}),'qr-code.svg');};}},
+{ slug: "word-counter", name: "Word Counter", art: '<svg viewBox="0 0 64 64" fill="none"><rect x="10" y="8" width="36" height="46" rx="8" fill="#3B82F6" opacity=".18"/><rect x="16" y="18" width="24" height="4" rx="2" fill="#3B82F6"/><rect x="16" y="27" width="24" height="4" rx="2" fill="#3B82F6" opacity=".7"/><rect x="16" y="36" width="14" height="4" rx="2" fill="#3B82F6" opacity=".5"/><circle cx="46" cy="44" r="13" fill="#22D3EE"/><text x="46" y="48" font-size="11" font-weight="800" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">123</text></svg>', cat: "text", icon: "🔤", kw: "word count characters sentences paragraphs reading time",
+  desc: "Count words, characters, sentences, paragraphs and reading time.",
+  intro: "Type or paste text to see live counts of words, characters, sentences and paragraphs, plus an estimated reading time.",
+  html: `<label for="t">Your text</label><textarea id="t" rows="10" placeholder="Start typing or paste your text here…"></textarea>
+<div class="metrics" id="m" aria-live="polite"></div>
+<button class="btn" id="cp">Copy text</button><button class="btn ghost" id="cl">Clear</button><p class="err" id="msg" role="status"></p>`,
+  how: "Type or paste text into the box and the counts update as you go. Copy text copies everything in the box, and Clear empties it. Reading time assumes about 200 words per minute.",
+  faq: [["How are words counted?", "Words are separated by spaces or line breaks, so a hyphenated word such as well-known counts as one word."],
+        ["How are characters counted?", "Characters are counted by Unicode code point, so accented letters and most non-Latin scripts count as one character each."]],
+  init() {
+    const t = document.getElementById('t'), m = document.getElementById('m');
+    const stat = (l, v) => `<div class="metric"><b>${v}</b><span>${l}</span></div>`;
+    const draw = () => {
+      const s = t.value, w = s.trim() ? s.trim().split(/\s+/).length : 0;
+      const sent = s.split(/[.!?]+/).filter(x => x.trim()).length;
+      const para = s.split(/\n\s*\n/).filter(x => x.trim()).length;
+      m.innerHTML = stat('Words', w.toLocaleString()) + stat('Characters', [...s].length.toLocaleString()) +
+        stat('Characters (no spaces)', [...s.replace(/\s/g, '')].length.toLocaleString()) + stat('Sentences', sent) +
+        stat('Paragraphs', para) + stat('Reading time', w ? Math.max(1, Math.round(w / 200)) + ' min' : '0 min');
+    };
+    t.addEventListener('input', draw); draw();
+    document.getElementById('cp').onclick = () => copyTo(t.value, 'msg');
+    document.getElementById('cl').onclick = () => { t.value = ''; draw(); say('msg', true, 'Cleared.'); };
+  }
+},
+{ slug: "case-converter", name: "Case Converter", art: '<svg viewBox="0 0 64 64" fill="none"><rect x="4" y="14" width="24" height="36" rx="7" fill="#3B82F6" opacity=".18"/><text x="16" y="42" font-size="22" font-weight="800" text-anchor="middle" fill="#3B82F6" font-family="system-ui,sans-serif">A</text><path d="M31 32h6m-3-3 3 3-3 3" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="36" y="14" width="24" height="36" rx="7" fill="#22D3EE" opacity=".3"/><text x="48" y="42" font-size="22" font-weight="800" text-anchor="middle" fill="#0B1020" font-family="system-ui,sans-serif">a</text></svg>', cat: "text", icon: "🔠", kw: "uppercase lowercase title case sentence case capitalize text",
+  desc: "Switch text between UPPERCASE, lowercase, Title Case and Sentence case.",
+  intro: "Convert text to uppercase, lowercase, Title Case or Sentence case. Line breaks are kept as they are.",
+  html: `<label for="t">Your text</label><textarea id="t" rows="10" placeholder="Paste your text here…"></textarea>
+<div><button class="btn" data-m="upper">UPPERCASE</button><button class="btn" data-m="lower">lowercase</button><button class="btn" data-m="title">Title Case</button><button class="btn" data-m="sentence">Sentence case</button></div>
+<div><button class="btn ghost" id="cp">Copy</button><button class="btn ghost" id="dl">Download .txt</button><button class="btn ghost" id="cl">Clear</button></div>
+<p class="err" id="msg" role="status"></p>`,
+  how: "Paste your text, then press a case button and the text in the box is converted. Use Copy to copy the result, or Download .txt to save it. Clear empties the box.",
+  faq: [["What does Title Case capitalize?", "Every word's first letter is capitalized, including small words such as 'a' or 'of', so review headlines before publishing."],
+        ["Does it work with other languages?", "It uses standard Unicode case rules, which work for many languages. Scripts without uppercase or lowercase forms are left unchanged."]],
+  init() {
+    const t = document.getElementById('t');
+    const fns = {
+      upper: s => s.toUpperCase(),
+      lower: s => s.toLowerCase(),
+      title: s => s.toLowerCase().replace(/(^|[\s"'(\[\-–—])(\p{L})/gu, (_, p, c) => p + c.toUpperCase()),
+      sentence: s => s.toLowerCase().replace(/(^|[.!?]\s+|\n\s*)(\p{L})/gu, (_, p, c) => p + c.toUpperCase())
+    };
+    document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+      if (!t.value.trim()) return say('msg', false, 'Enter some text first.');
+      t.value = fns[b.dataset.m](t.value); say('msg', true, 'Converted.');
+    });
+    document.getElementById('cp').onclick = () => copyTo(t.value, 'msg');
+    document.getElementById('dl').onclick = () => saveTxt(t.value, 'converted-text.txt');
+    document.getElementById('cl').onclick = () => { t.value = ''; say('msg', true, ''); };
+  }
+},
+{ slug: "json-formatter", name: "JSON Formatter", art: '<svg viewBox="0 0 64 64" fill="none"><path d="M24 10c-6 0-7 4-7 8v6c0 3-2 5-5 6 3 1 5 3 5 6v6c0 4 1 8 7 8" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/><path d="M40 10c6 0 7 4 7 8v6c0 3 2 5 5 6-3 1-5 3-5 6v6c0 4-1 8-7 8" stroke="#22D3EE" stroke-width="4" stroke-linecap="round"/><circle cx="26" cy="32" r="3.5" fill="#3B82F6"/><circle cx="38" cy="32" r="3.5" fill="#22D3EE"/></svg>', cat: "dev", icon: "{ }", kw: "json format minify validate beautify developer",
+  desc: "Format, minify and validate JSON, with error line and column.",
+  intro: "Paste JSON to format it with indentation, minify it onto one line, or check it for syntax errors.",
+  html: `<label for="t">JSON input</label><textarea id="t" rows="10" spellcheck="false" placeholder='{"name":"Example"}'></textarea>
+<div><button class="btn" id="f">Format</button><button class="btn" id="mi">Minify</button><button class="btn ghost" id="sa">Load sample</button><button class="btn ghost" id="cl">Clear</button></div>
+<p class="err" id="msg" role="status"></p><label>Result</label><pre id="o" aria-live="polite"></pre>
+<button class="btn ghost" id="cp">Copy result</button>`,
+  how: "Paste JSON and click Format to indent it, or Minify to remove extra whitespace. If the JSON is invalid, the message shows the line and column where parsing stopped. Everything runs in your browser.",
+  faq: [["Is my JSON sent to a server?", "No. Parsing and formatting happen in your browser."],
+        ["Why does it say my JSON is invalid?", "Common causes are trailing commas, single quotes, unquoted keys and missing brackets. The reported line and column show where parsing stopped."]],
+  init() {
+    const t = document.getElementById('t'), o = document.getElementById('o');
+    const run = space => {
+      if (!t.value.trim()) { o.textContent = ''; return say('msg', false, 'Paste some JSON first.'); }
+      try { o.textContent = JSON.stringify(JSON.parse(t.value), null, space); say('msg', true, 'Valid JSON.'); }
+      catch (e) {
+        let m = e.message; const p = /position (\d+)/.exec(m);
+        if (p) { const pos = +p[1], before = t.value.slice(0, pos); m += ` (line ${before.split('\n').length}, column ${pos - before.lastIndexOf('\n')})`; }
+        o.textContent = ''; say('msg', false, 'Invalid JSON: ' + m);
+      }
+    };
+    document.getElementById('f').onclick = () => run(2);
+    document.getElementById('mi').onclick = () => run(0);
+    document.getElementById('sa').onclick = () => { t.value = '{"name":"QuickTools","tags":["free","fast"],"active":true,"version":2}'; run(2); };
+    document.getElementById('cl').onclick = () => { t.value = ''; o.textContent = ''; say('msg', true, ''); };
+    document.getElementById('cp').onclick = () => copyTo(o.textContent, 'msg');
+  }
+},
+{ slug: "percentage-calculator", name: "Percentage Calculator", art: '<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="24" fill="#3B82F6" opacity=".15"/><path d="M32 32V8a24 24 0 0 1 22.6 16.1Z" fill="#3B82F6"/><path d="M32 32l22.6-7.9A24 24 0 0 1 36.3 55.6Z" fill="#22D3EE"/><circle cx="32" cy="32" r="7" fill="#fff"/></svg>', cat: "calc", icon: "％", kw: "percentage percent discount increase decrease calculator",
+  desc: "Work out percentages, percentage change and discounts.",
+  intro: "Calculate a percentage of a number, what percentage one number is of another, percentage change, or a discount.",
+  html: `<div class="calc"><form id="f1"><h3>What is X% of Y?</h3><div class="two"><div><label for="p1">Percent (X)</label><input id="p1" type="number" step="any"></div><div><label for="n1">Number (Y)</label><input id="n1" type="number" step="any"></div></div><button class="btn">Calculate</button><p class="res" id="r1"></p></form></div>
+<div class="calc"><form id="f2"><h3>X is what percent of Y?</h3><div class="two"><div><label for="a2">Part (X)</label><input id="a2" type="number" step="any"></div><div><label for="b2">Whole (Y)</label><input id="b2" type="number" step="any"></div></div><button class="btn">Calculate</button><p class="res" id="r2"></p></form></div>
+<div class="calc"><form id="f3"><h3>Percentage change</h3><div class="two"><div><label for="a3">Original value</label><input id="a3" type="number" step="any"></div><div><label for="b3">New value</label><input id="b3" type="number" step="any"></div></div><button class="btn">Calculate</button><p class="res" id="r3"></p></form></div>
+<div class="calc"><form id="f4"><h3>Discount</h3><div class="two"><div><label for="p4">Price</label><input id="p4" type="number" step="any" min="0"></div><div><label for="d4">Discount (%)</label><input id="d4" type="number" step="any" min="0" max="100"></div></div><button class="btn">Calculate</button><p class="res" id="r4"></p></form></div>`,
+  how: "Choose the calculation that matches your question, enter the numbers, and click Calculate. Each result shows the formula used so you can check it.",
+  faq: [["Why can't the whole (Y) be zero?", "Dividing by zero is undefined, so the calculator asks you to check the value."],
+        ["How is percentage change calculated?", "It is the difference between the new and original values, divided by the original value, multiplied by 100."]],
+  init() {
+    const v = id => { const x = document.getElementById(id).value; return x === '' ? NaN : Number(x); };
+    const f = n => Number(n.toFixed(4)).toLocaleString(undefined, { maximumFractionDigits: 4 });
+    const bad = (...xs) => xs.some(x => !isFinite(x));
+    const on = (id, fn) => document.getElementById(id).addEventListener('submit', e => { e.preventDefault(); fn(); });
+    on('f1', () => { const p = v('p1'), n = v('n1'); if (bad(p, n)) return say('r1', false, 'Enter both numbers.');
+      say('r1', true, `${f(p / 100 * n)}  ·  ${f(p)} ÷ 100 × ${f(n)}`); });
+    on('f2', () => { const a = v('a2'), b = v('b2'); if (bad(a, b)) return say('r2', false, 'Enter both numbers.');
+      if (b === 0) return say('r2', false, 'The whole (Y) cannot be zero.');
+      say('r2', true, `${f(a / b * 100)}%  ·  ${f(a)} ÷ ${f(b)} × 100`); });
+    on('f3', () => { const a = v('a3'), b = v('b3'); if (bad(a, b)) return say('r3', false, 'Enter both numbers.');
+      if (a === 0) return say('r3', false, 'The original value cannot be zero.');
+      const d = (b - a) / a * 100, label = d === 0 ? 'No change' : f(Math.abs(d)) + '% ' + (d > 0 ? 'increase' : 'decrease');
+      say('r3', true, `${label}  ·  (${f(b)} − ${f(a)}) ÷ ${f(a)} × 100`); });
+    on('f4', () => { const p = v('p4'), d = v('d4'); if (bad(p, d)) return say('r4', false, 'Enter a price and a discount.');
+      if (p < 0 || d < 0 || d > 100) return say('r4', false, 'Price must be 0 or more, and discount must be between 0 and 100.');
+      const s = p * d / 100; say('r4', true, `You save ${f(s)}  ·  Final price ${f(p - s)}`); });
+  }
+},
+{ slug: "age-calculator", name: "Age Calculator", art: '<svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="48" height="44" rx="10" fill="#3B82F6" opacity=".18"/><rect x="8" y="12" width="48" height="13" rx="6" fill="#3B82F6"/><rect x="20" y="6" width="5" height="11" rx="2.5" fill="#22D3EE"/><rect x="39" y="6" width="5" height="11" rx="2.5" fill="#22D3EE"/><rect x="16" y="32" width="9" height="8" rx="2" fill="#3B82F6"/><rect x="28" y="32" width="9" height="8" rx="2" fill="#3B82F6" opacity=".5"/><rect x="40" y="32" width="9" height="8" rx="2" fill="#22D3EE"/><rect x="16" y="44" width="9" height="8" rx="2" fill="#3B82F6" opacity=".5"/></svg>', cat: "calc", icon: "🎂", kw: "age birthday calculator date days years months",
+  desc: "Calculate exact age, total days lived and days until the next birthday.",
+  intro: "Enter a date of birth to see exact age in years, months and days, total days lived and the countdown to the next birthday.",
+  html: `<div class="two"><div><label for="dob">Date of birth</label><input id="dob" type="date"></div><div><label for="ref">Calculate age on</label><input id="ref" type="date"></div></div>
+<button class="btn" id="go">Calculate</button><p class="err" id="msg" role="status"></p><div class="metrics" id="m" aria-live="polite"></div>`,
+  how: "Enter your date of birth. The reference date defaults to today, but you can change it to calculate age on another day. Click Calculate.",
+  faq: [["How are leap-day birthdays handled?", "In years without February 29, a leap-day birthday is counted as March 1 for the countdown."],
+        ["Is the day count exact?", "Total days are calculated from calendar dates, so daylight saving time changes do not affect the result."]],
+  init() {
+    const n = new Date(), p2 = x => String(x).padStart(2, '0');
+    document.getElementById('ref').value = `${n.getFullYear()}-${p2(n.getMonth() + 1)}-${p2(n.getDate())}`;
+    document.getElementById('go').onclick = () => {
+      const dv = document.getElementById('dob').value, rv = document.getElementById('ref').value;
+      if (!dv || !rv) return say('msg', false, 'Enter both dates.');
+      const [dy, dm, dd] = dv.split('-').map(Number), [ry, rm, rd] = rv.split('-').map(Number);
+      const dU = Date.UTC(dy, dm - 1, dd), rU = Date.UTC(ry, rm - 1, rd), DAY = 864e5;
+      if (dU > rU) return say('msg', false, 'Date of birth must be on or before the reference date.');
+      let y = ry - dy, mo = rm - dm, d = rd - dd;
+      if (d < 0) { mo--; d += new Date(ry, rm - 1, 0).getDate(); }
+      if (mo < 0) { y--; mo += 12; }
+      let nb = Date.UTC(ry, dm - 1, dd); if (nb < rU) nb = Date.UTC(ry + 1, dm - 1, dd);
+      const left = Math.round((nb - rU) / DAY), total = Math.round((rU - dU) / DAY);
+      const stat = (l, v) => `<div class="metric"><b>${v}</b><span>${l}</span></div>`;
+      const next = new Date(nb).toLocaleDateString(undefined, { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('m').innerHTML = stat('Years', y) + stat('Months', mo) + stat('Days', d) +
+        stat('Total days lived', total.toLocaleString()) + stat('Next birthday', next) +
+        stat('Days until next birthday', left === 0 ? 'Today!' : left.toLocaleString());
+      say('msg', true, '');
+    };
+  }
+}
+];
+
+const card = t => `<a class="card" href="#/tool/${t.slug}"><div class="ctop"><span class="ico" aria-hidden="true">${t.art}</span><span class="arrow" aria-hidden="true">↗</span></div><h3>${t.name}</h3><p>${t.desc}</p><span class="tag">${CATS[t.cat][0]}</span></a>`;
+const catCard = k => { const n = TOOLS.filter(t => t.cat === k).length;
+  return `<a class="card" href="#/category/${k}"><span class="ico" aria-hidden="true">${CATS[k][1]}</span><h3>${CATS[k][0]}</h3><p>${CATS[k][2]} ${n ? n + ' tool' + (n > 1 ? 's' : '') : '<em>Coming in a later build.</em>'}</p></a>`; };
+const chip = (k, l) => `<button class="chip" data-cat="${k}" aria-pressed="${state.cat === k}">${l}</button>`;
+const dir = () => `<div class="chips">${chip('all', 'All')}${Object.keys(CATS).filter(k => TOOLS.some(t => t.cat === k)).map(k => chip(k, CATS[k][0])).join('')}</div><div class="grid" id="grid"></div><p class="muted" id="none" hidden></p>`;
+const searchBox = () => `<label class="sr" for="q">Search tools</label><input type="search" id="q" placeholder="Search tools by name or keyword" autocomplete="off" style="margin-bottom:20px">`;
+function tilt(e,el){const r=el.getBoundingClientRect();el.style.setProperty('--rx',((0.5-(e.clientY-r.top)/r.height)*16)+'deg');el.style.setProperty('--ry',(((e.clientX-r.left)/r.width-0.5)*20)+'deg')}
+const scene = () => `<div class="scene" onpointermove="tilt(event,this)" onpointerleave="this.style.setProperty('--rx','0deg');this.style.setProperty('--ry','0deg')"><div class="glow"></div>${['word-counter','case-converter','json-formatter','percentage-calculator','age-calculator'].map((s, i) => { const t = TOOLS.find(x => x.slug === s); return `<a class="fcard fc${i + 1}" href="#/tool/${t.slug}">${t.art}<span>${t.name}</span></a>`; }).join('')}</div>`;
+const faqHTML = arr => arr.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('');
+
+function grid() {
+  const q = state.q.trim().toLowerCase();
+  const list = TOOLS.filter(t => (state.cat === 'all' || t.cat === state.cat) && (!q || (t.name + ' ' + t.kw + ' ' + t.desc).toLowerCase().includes(q)));
+  const g = document.getElementById('grid'); if (!g) return;
+  g.innerHTML = list.map(card).join('');
+  const none = document.getElementById('none');
+  const built = state.cat === 'all' || TOOLS.some(t => t.cat === state.cat);
+  none.hidden = list.length > 0;
+  none.textContent = !built ? 'Tools for this category are coming in a later build.' : 'No tools match your search. Try another keyword.';
+  document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.cat === state.cat));
+}
+
+const view = (html, title) => { app.innerHTML = `<div class="wrap">${html}</div>`; document.title = title + ' – Toolora'; window.scrollTo(0, 0); };
+
+function home() {
+  state = { cat: 'all', q: '' };
+  const popular = ['word-counter', 'percentage-calculator', 'json-formatter', 'age-calculator'].map(s => TOOLS.find(t => t.slug === s));
+  view(`<section class="hero"><span class="badge">Powerful Tools. Simple Solutions.</span><h1>Free Online Tools for Everyday Tasks</h1>
+<p class="lead">Compress images, manage PDFs, format text, generate QR codes, and calculate results — all in one place.</p>
+${scene()}${searchBox().replace('margin-bottom:20px', '')}</section>
+<section><h2>Popular tools</h2><div class="grid">${popular.map(card).join('')}</div></section>
+<section><h2>Browse by category</h2><div class="grid">${Object.keys(CATS).filter(k => TOOLS.some(t => t.cat === k)).map(catCard).join('')}</div></section>
+<section><h2>All Tools</h2>${dir()}</section>
+<section><h2>Why use Toolora</h2><div class="grid">
+<div class="benefit"><h3>Private by design</h3><p>The tools process your input in your browser, so the text and numbers you enter are not sent to a server.</p></div>
+<div class="benefit"><h3>No sign-up</h3><p>Open a tool and start working. There are no accounts, passwords or API keys to set up.</p></div>
+<div class="benefit"><h3>Works on any device</h3><p>Layouts adapt to phones, tablets and desktop screens.</p></div>
+</div></section>
+<section><h2>Frequently asked questions</h2>${faqHTML([
+  ["Is Toolora free?", "Yes. The tools on this site are free to use."],
+  ["Do I need an account?", "No. You can use every tool without signing up or logging in."],
+  ["Are my text and numbers uploaded?", "The tools work with text and numbers in your browser and do not send that input to a server."]])}</section>`, 'Free Online Tools for Everyday Tasks');
+  grid();
+}
+
+function allTools() { state = { cat: 'all', q: '' };
+  view(`<h1>All Tools</h1>${searchBox()}${dir()}`, 'All Tools'); grid(); }
+
+function category(k) { state = { cat: k, q: '' };
+  view(`<p class="crumb"><a href="#/">Home</a> / ${CATS[k][0]}</p><h1>${CATS[k][0]}</h1><p class="muted">${CATS[k][2]}</p>${searchBox()}${dir()}`, CATS[k][0]); grid(); }
+
+function tool(t) {
+  const related = TOOLS.filter(x => x !== t).sort((a, b) => (b.cat === t.cat) - (a.cat === t.cat)).slice(0, 3);
+  view(`<p class="crumb"><a href="#/">Home</a> / <a href="#/category/${t.cat}">${CATS[t.cat][0]}</a> / ${t.name}</p>
+<a class="back" href="#/category/${t.cat}">← Back to ${CATS[t.cat][0]}</a><div class="tool-art" aria-hidden="true">${t.art}</div><h1>${t.name}</h1><p class="muted">${t.intro}</p>
+<div class="toolbox">${t.html}</div>
+<div class="ad-slot" aria-hidden="true"></div>
+<section><h2>How to use</h2><p>${t.how}</p></section>
+<section><h2>FAQ</h2>${faqHTML(t.faq)}</section>
+<section><h2>Related tools</h2><div class="grid">${related.map(card).join('')}</div></section>
+<p><a class="back" href="#/tools">← Back to All Tools</a></p>`, t.name);
+  t.init();
+}
+
+const PAGES = {
+  about: ['About', `<p>Toolora offers free, simple online tools for everyday text, number, date and developer tasks. Most tools run in your browser.</p><p>Each tool is built to do one job well, and we are adding more tools over time. No account is needed to use any of them.</p>`],
+  contact: ['Contact', `<p>For questions, corrections or feedback, email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>`],
+  privacy: ['Privacy Policy', `<p>The tools on this site process what you type in your own browser. The tools do not upload that text or those numbers to a server.</p><p>Hosting providers may keep standard server logs.</p><p>This site may show advertisements served by Google AdSense. Google and its partners may use cookies to show ads based on your previous visits to this and other websites. To learn how Google uses data in its ads and to manage ad personalization, visit <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">google.com/settings/ads</a>.</p><p>Questions about this policy can be sent through the Contact page.</p>`],
+  terms: ['Terms of Service', `<p>The tools are provided as they are, for general use and without warranties. You are responsible for checking results before relying on them.</p>`],
+  disclaimer: ['Disclaimer', `<p>Calculator and converter results are provided for convenience. They are not financial, legal, medical or other professional advice. Verify important results independently.</p>`]
+};
+
+function closeMenu() { document.getElementById('nav').classList.remove('open'); document.getElementById('menuBtn').setAttribute('aria-expanded', 'false'); }
+
+function route() {
+  closeMenu();
+  const [a, b] = location.hash.replace(/^#\/?/, '').split('/');
+  if (!a) return home();
+  if (a === 'tools') return allTools();
+  if (a === 'category' && CATS[b]) return category(b);
+  if (a === 'tool') { const t = TOOLS.find(x => x.slug === b); if (t) return tool(t); }
+  if (PAGES[a]) return view(`<h1>${PAGES[a][0]}</h1>${PAGES[a][1]}`, PAGES[a][0]);
+  view(`<h1>Page not found</h1><p class="muted">The page you were looking for doesn't exist.</p><p><a href="#/">Go to the homepage</a></p>`, 'Page not found');
+}
+
+app.addEventListener('input', e => { if (e.target.id === 'q') { state.q = e.target.value; grid(); } });
+app.addEventListener('click', e => { const c = e.target.closest('.chip'); if (c) { state.cat = c.dataset.cat; grid(); } });
+document.getElementById('menuBtn').onclick = () => {
+  const open = document.getElementById('nav').classList.toggle('open');
+  document.getElementById('menuBtn').setAttribute('aria-expanded', open);
+};
+window.addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
